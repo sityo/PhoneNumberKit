@@ -9,6 +9,7 @@
 import Foundation
 #if os(iOS)
 import CoreTelephony
+import UIKit
 #endif
 
 public typealias MetadataCallback = (() throws -> Data?)
@@ -322,12 +323,20 @@ public final class PhoneNumberKit: NSObject {
     ///
     /// - returns: an optional Data representation of the metadata.
     public static func defaultMetadataCallback() throws -> Data? {
-        let frameworkBundle = Bundle.myModule
-        guard let jsonPath = frameworkBundle.path(forResource: "PhoneNumberMetadata", ofType: "json") else {
-            throw PhoneNumberError.metadataNotFound
-        }
-        let data = try Data(contentsOf: URL(fileURLWithPath: jsonPath))
-        return data
+        #if os(iOS)
+            guard let asset = NSDataAsset(name: "PhoneNumberMetadata.json", bundle: .myModule) else {
+                throw PhoneNumberError.metadataNotFound
+            }
+            
+            return asset.data
+        #else
+            let frameworkBundle = Bundle.module
+            guard let jsonPath = frameworkBundle.path(forResource: "PhoneNumberMetadata", ofType: "json") else {
+                throw PhoneNumberError.metadataNotFound
+            }
+            let data = try Data(contentsOf: URL(fileURLWithPath: jsonPath))
+            return data
+        #endif
     }
 }
 
