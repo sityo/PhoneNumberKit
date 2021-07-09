@@ -47,11 +47,9 @@ extension Foundation.Bundle {
             }
             
             // Last ditch effort.
-            return .module
         }
-
-        fatalError("unable to find bundle")
-
+        
+        return .module
     }()
 
 }
