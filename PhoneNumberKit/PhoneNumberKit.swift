@@ -318,11 +318,11 @@ public final class PhoneNumberKit: NSObject {
         return PhoneNumberConstants.defaultCountry
     }
 
-    /// Default metadta callback, reads metadata from PhoneNumberMetadata.json file in bundle
+    /// Default metadata callback, reads metadata from PhoneNumberMetadata.json file in bundle
     ///
     /// - returns: an optional Data representation of the metadata.
     public static func defaultMetadataCallback() throws -> Data? {
-        let frameworkBundle = Bundle.module
+        let frameworkBundle = Bundle.myModule
         guard let jsonPath = frameworkBundle.path(forResource: "PhoneNumberMetadata", ofType: "json") else {
             throw PhoneNumberError.metadataNotFound
         }
